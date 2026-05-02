@@ -1,7 +1,7 @@
 export type ProductImage = {
   id: string;
   url: string;
-  alt?: string | null;
+  alt: string | null;
   order: number;
   productId: string;
 };
@@ -24,7 +24,7 @@ export type Category = {
   id: string;
   name: string;
   slug: string;
-  description?: string | null;
+  description: string | null;
   order: number;
   createdAt?: string;
   updatedAt?: string;
@@ -35,8 +35,8 @@ export type Product = {
   id: string;
   name: string;
   slug: string;
-  description?: string | null;
-  price?: number | null;
+  description: string | null;
+  price: number | null;
   featured: boolean;
   available: boolean;
   isNew: boolean;
@@ -65,18 +65,18 @@ export type QuoteRequest = {
   company: string;
   contact: string;
   email: string;
-  phone?: string | null;
-  units?: number | null;
-  message?: string | null;
+  phone: string | null;
+  units: number | null;
+  message: string | null;
   status: string;
-  createdAt?: string;
+  createdAt: string;
 };
 
 export type Testimonial = {
   id: string;
   name: string;
-  role?: string | null;
-  company?: string | null;
+  role: string | null;
+  company: string | null;
   content: string;
   rating: number;
   active: boolean;
@@ -86,11 +86,11 @@ export type Testimonial = {
 
 export type Banner = {
   id: string;
-  title?: string | null;
-  subtitle?: string | null;
-  imageUrl?: string | null;
-  linkUrl?: string | null;
-  linkLabel?: string | null;
+  title: string | null;
+  subtitle: string | null;
+  imageUrl: string | null;
+  linkUrl: string | null;
+  linkLabel: string | null;
   bgColor: string;
   active: boolean;
   order: number;
