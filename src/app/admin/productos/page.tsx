@@ -68,7 +68,7 @@ export default async function ProductosPage() {
                   <td className="px-4 py-3">
                     <div className="font-semibold text-[#0f172a]">{p.name}</div>
                     <div className="text-xs text-gray-400 mt-0.5">
-                      {p._count.images} img · {p._count.colors} colores
+                      {p._count?.images ?? 0} img · {p._count?.colors ?? 0} colores
                     </div>
                   </td>
                   <td className="px-4 py-3 hidden md:table-cell text-gray-600">
