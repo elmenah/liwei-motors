@@ -37,7 +37,7 @@ function asErrorMessage(error: unknown) {
   return "Unknown database error";
 }
 
-async function run<T>(promise: Promise<{ data: T; error: unknown }>) {
+async function run<T>(promise: PromiseLike<{ data: T; error: unknown }>) {
   const { data, error } = await promise;
   if (error) throw new Error(asErrorMessage(error));
   return data;
