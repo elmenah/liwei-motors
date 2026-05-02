@@ -6,12 +6,13 @@ import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import ProductForm from "../ProductForm";
+import type { Category } from "@/types/db";
 
 export default async function NuevoProductoPage() {
   const session = await auth();
   if (!session) redirect("/admin/login");
 
-  const categories = await prisma.category.findMany({ orderBy: { order: "asc" } });
+  const categories: Category[] = await prisma.category.findMany({ orderBy: { order: "asc" } });
 
   return (
     <div className="p-6">

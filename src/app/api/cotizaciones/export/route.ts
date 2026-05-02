@@ -2,12 +2,13 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import * as XLSX from "xlsx";
+import type { QuoteRequest } from "@/types/db";
 
 export async function GET() {
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const quotes = await prisma.quoteRequest.findMany({ orderBy: { createdAt: "desc" } });
+  const quotes: QuoteRequest[] = await prisma.quoteRequest.findMany({ orderBy: { createdAt: "desc" } });
 
   const rows = quotes.map((q) => ({
     Empresa: q.company,

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import type { Product } from "@/types/db";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
@@ -10,7 +11,7 @@ export async function POST(_req: NextRequest, { params }: RouteContext) {
 
   const { id } = await params;
 
-  const original = await prisma.product.findUnique({
+  const original: Product | null = await prisma.product.findUnique({
     where: { id },
     include: { images: true, colors: true, specs: true },
   });

@@ -6,6 +6,7 @@ import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import ProductForm from "../../ProductForm";
+import type { Product, Category } from "@/types/db";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -15,7 +16,7 @@ export default async function EditarProductoPage({ params }: Props) {
 
   const { id } = await params;
 
-  const [product, categories] = await Promise.all([
+  const [product, categories]: [Product | null, Category[]] = await Promise.all([
     prisma.product.findUnique({
       where: { id },
       include: {
