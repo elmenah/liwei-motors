@@ -6,6 +6,23 @@ import prisma from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";
 import BannerSlider from "@/components/BannerSlider";
 
+type HomeCategory = {
+  id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  _count: { products: number };
+};
+
+type HomeTestimonial = {
+  id: string;
+  rating: number;
+  content: string;
+  name: string;
+  role: string | null;
+  company: string | null;
+};
+
 async function getFeaturedProducts() {
   return prisma.product.findMany({
     where: { featured: true, available: true },
@@ -38,6 +55,10 @@ export default async function HomePage() {
   const [featured, categories, banners, testimonials] = await Promise.all([
     getFeaturedProducts(), getCategories(), getBanners(), getTestimonials(),
   ]);
+
+  const featuredList = featured as Parameters<typeof ProductCard>[0]["product"][];
+  const categoryList = categories as HomeCategory[];
+  const testimonialList = testimonials as HomeTestimonial[];
 
   return (
     <>
@@ -125,7 +146,7 @@ export default async function HomePage() {
             <p className="text-gray-500 mt-2">Encuentra el vehículo eléctrico ideal para ti</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {categories.map((cat) => (
+            {categoryList.map((cat) => (
               <Link
                 key={cat.id}
                 href={`/catalogo?categoria=${cat.slug}`}
@@ -155,7 +176,7 @@ export default async function HomePage() {
       </section>
 
       {/* Featured products */}
-      {featured.length > 0 && (
+      {featuredList.length > 0 && (
         <section className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-10">
@@ -171,7 +192,7 @@ export default async function HomePage() {
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {featured.map((p) => (
+              {featuredList.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}
             </div>
@@ -232,7 +253,7 @@ export default async function HomePage() {
       </section>
 
       {/* Testimonials */}
-      {testimonials.length > 0 && (
+      {testimonialList.length > 0 && (
         <section className="py-16 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
@@ -240,7 +261,7 @@ export default async function HomePage() {
               <p className="text-gray-500 mt-2">Experiencias reales de quienes eligieron Liwei Motors</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {testimonials.map((t) => (
+              {testimonialList.map((t) => (
                 <div key={t.id} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex flex-col gap-4">
                   {/* Stars */}
                   <div className="flex gap-1">

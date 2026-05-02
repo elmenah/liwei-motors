@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
-type Context = RouteContext<"/api/categorias/[id]">;
+type Context = { params: Promise<{ id: string }> };
 
 export async function PUT(req: NextRequest, ctx: Context) {
   const session = await auth();
