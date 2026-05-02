@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import prisma from "./prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
     Credentials({
       credentials: {
@@ -21,12 +22,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         const valid = await bcrypt.compare(
           credentials.password as string,
-          user.password
+          user.password as string
         );
 
         if (!valid) return null;
 
-        return { id: user.id, email: user.email, name: user.name };
+        return { id: user.id as string, email: user.email as string, name: user.name as string };
       },
     }),
   ],
