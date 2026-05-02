@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import Link from "next/link";
 import { ArrowRight, Zap, Shield, Truck, Award, ChevronRight } from "lucide-react";
 import prisma from "@/lib/prisma";
