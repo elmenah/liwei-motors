@@ -5,7 +5,9 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import QuoteActions from "./QuoteActions";
 
-async function getQuotes() {
+import type { QuoteRequest } from "@/types/db";
+
+async function getQuotes(): Promise<QuoteRequest[]> {
   return prisma.quoteRequest.findMany({ orderBy: { createdAt: "desc" } });
 }
 

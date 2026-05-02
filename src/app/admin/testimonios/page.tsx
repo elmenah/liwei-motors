@@ -4,12 +4,13 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import TestimoniosClient from "./TestimoniosClient";
+import type { Testimonial } from "@/types/db";
 
 export default async function TestimoniosPage() {
   const session = await auth();
   if (!session) redirect("/admin/login");
 
-  const testimonials = await prisma.testimonial.findMany({ orderBy: { order: "asc" } });
+  const testimonials: Testimonial[] = await prisma.testimonial.findMany({ orderBy: { order: "asc" } });
 
   return (
     <div>

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { Package, Tag, FileText, MessageCircle } from "lucide-react";
 import Link from "next/link";
+import type { QuoteRequest } from "@/types/db";
 
 async function getStats() {
   const [products, categories, quotes, faqs] = await Promise.all([
@@ -17,7 +18,7 @@ async function getStats() {
   return { products, categories, quotes, pendingQuotes, faqs };
 }
 
-async function getRecentQuotes() {
+async function getRecentQuotes(): Promise<QuoteRequest[]> {
   return prisma.quoteRequest.findMany({
     orderBy: { createdAt: "desc" },
     take: 5,

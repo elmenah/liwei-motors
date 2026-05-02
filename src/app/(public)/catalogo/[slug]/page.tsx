@@ -6,8 +6,9 @@ import { ArrowLeft, CheckCircle2, Tag } from "lucide-react";
 import prisma from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";
 import ProductImageGallery from "@/components/ProductImageGallery";
+import type { Product, ProductColor, ProductSpec } from "@/types/db";
 
-async function getProduct(slug: string) {
+async function getProduct(slug: string): Promise<Product | null> {
   return prisma.product.findUnique({
     where: { slug },
     include: {
@@ -19,7 +20,7 @@ async function getProduct(slug: string) {
   });
 }
 
-async function getRelated(categoryId: string, excludeSlug: string) {
+async function getRelated(categoryId: string, excludeSlug: string): Promise<Product[]> {
   return prisma.product.findMany({
     where: { categoryId, available: true, NOT: { slug: excludeSlug } },
     include: { images: { orderBy: { order: "asc" }, take: 1 }, colors: true, category: true },
@@ -100,7 +101,7 @@ export default async function ProductDetailPage({ params }: Props) {
             <div className="mb-6">
               <h3 className="text-sm font-semibold text-gray-700 mb-2">Colores disponibles</h3>
               <div className="flex flex-wrap gap-3">
-                {product.colors.map((c) => (
+                {product.colors.map((c: ProductColor) => (
                   <div key={c.id} className="flex items-center gap-2">
                     <div
                       className="w-6 h-6 rounded-full border-2 border-white shadow-md"
@@ -119,7 +120,7 @@ export default async function ProductDetailPage({ params }: Props) {
             <div className="bg-gray-50 rounded-xl p-4 mb-6">
               <h3 className="text-sm font-semibold text-gray-700 mb-3">Especificaciones técnicas</h3>
               <ul className="space-y-2">
-                {product.specs.map((s) => (
+                {product.specs.map((s: ProductSpec) => (
                   <li key={s.id} className="flex items-center justify-between text-sm">
                     <span className="text-gray-500 flex items-center gap-2">
                       <CheckCircle2 className="w-3.5 h-3.5 text-[#1e40af]" />

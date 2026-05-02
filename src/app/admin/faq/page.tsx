@@ -4,8 +4,9 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import FAQManager from "./FAQManager";
+import type { FAQ } from "@/types/db";
 
-async function getFAQs() {
+async function getFAQs(): Promise<FAQ[]> {
   return prisma.fAQ.findMany({ orderBy: { order: "asc" } });
 }
 

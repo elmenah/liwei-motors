@@ -7,8 +7,9 @@ import Link from "next/link";
 import { Plus, Pencil, Eye, Package } from "lucide-react";
 import DeleteProductButton from "./DeleteProductButton";
 import DuplicateProductButton from "./DuplicateProductButton";
+import type { Product } from "@/types/db";
 
-async function getProducts() {
+async function getProducts(): Promise<Product[]> {
   return prisma.product.findMany({
     include: {
       category: true,

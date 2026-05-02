@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import prisma from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";
 import CatalogFilters from "./CatalogFilters";
+import type { Product, Category } from "@/types/db";
 
 export const metadata: Metadata = {
   title: "Catálogo | Liwei Motors",
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-async function getProducts(categoria?: string, q?: string) {
+async function getProducts(categoria?: string, q?: string): Promise<Product[]> {
   return prisma.product.findMany({
     where: {
       available: true,
@@ -32,7 +33,7 @@ async function getProducts(categoria?: string, q?: string) {
   });
 }
 
-async function getCategories() {
+async function getCategories(): Promise<Category[]> {
   return prisma.category.findMany({
     orderBy: { order: "asc" },
     include: { _count: { select: { products: true } } },

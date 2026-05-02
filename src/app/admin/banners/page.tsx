@@ -4,12 +4,13 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import BannersClient from "./BannersClient";
+import type { Banner } from "@/types/db";
 
 export default async function BannersPage() {
   const session = await auth();
   if (!session) redirect("/admin/login");
 
-  const banners = await prisma.banner.findMany({ orderBy: { order: "asc" } });
+  const banners: Banner[] = await prisma.banner.findMany({ orderBy: { order: "asc" } });
 
   return (
     <div>

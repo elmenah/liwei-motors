@@ -11,7 +11,9 @@ export const metadata: Metadata = {
   description: "Resolvé tus dudas sobre nuestros scooters y triciclos eléctricos. Garantía, envíos, mantenimiento y más.",
 };
 
-async function getFAQs() {
+import type { FAQ } from "@/types/db";
+
+async function getFAQs(): Promise<FAQ[]> {
   return prisma.fAQ.findMany({ orderBy: { order: "asc" } });
 }
 
