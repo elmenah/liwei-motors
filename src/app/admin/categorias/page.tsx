@@ -4,9 +4,9 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import CategoryManager from "./CategoryManager";
-import type { Category } from "@/types/db";
+import type { CategoryWithCount } from "@/types/db";
 
-async function getCategories(): Promise<Category[]> {
+async function getCategories(): Promise<CategoryWithCount[]> {
   return prisma.category.findMany({
     orderBy: { order: "asc" },
     include: { _count: { select: { products: true } } },

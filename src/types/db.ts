@@ -28,7 +28,10 @@ export type Category = {
   order: number;
   createdAt?: string;
   updatedAt?: string;
-  _count?: { products: number };
+};
+
+export type CategoryWithCount = Category & {
+  _count: { products: number };
 };
 
 export type Product = {
