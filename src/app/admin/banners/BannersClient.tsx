@@ -149,7 +149,12 @@ export default function BannersClient({ initialBanners }: { initialBanners: Bann
 
             {/* Image upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Imagen del banner</label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-sm font-medium text-gray-700">Imagen del banner</label>
+                <span className="text-xs text-gray-400 bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-md font-mono">
+                  1920 × 420 px recomendado
+                </span>
+              </div>
               {form.imageUrl ? (
                 <div className="relative group w-full h-36 rounded-xl overflow-hidden border border-gray-200">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -165,6 +170,7 @@ export default function BannersClient({ initialBanners }: { initialBanners: Bann
                 <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#1e40af] cursor-pointer transition-colors">
                   {uploading ? <Loader2 className="w-6 h-6 animate-spin text-gray-400" /> : <Upload className="w-6 h-6 text-gray-400" />}
                   <span className="text-sm text-gray-400 mt-2">{uploading ? "Subiendo..." : "Subir imagen"}</span>
+                  <span className="text-xs text-gray-300 mt-0.5">JPG, PNG o WebP · máx. 5 MB</span>
                   <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
                 </label>
               )}
