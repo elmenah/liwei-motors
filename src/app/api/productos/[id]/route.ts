@@ -12,33 +12,47 @@ export async function PUT(req: NextRequest, ctx: Context) {
   const body = await req.json();
   const { name, slug, description, price, categoryId, featured, available, isNew, isOffer, colors, specs, images } = body;
 
+  if (!name || !slug || !categoryId) {
+    return NextResponse.json({ error: "Faltan campos obligatorios: nombre, slug o categoría." }, { status: 400 });
+  }
+
   try {
     await prisma.productColor.deleteMany({ where: { productId: id } });
     await prisma.productSpec.deleteMany({ where: { productId: id } });
     await prisma.productImage.deleteMany({ where: { productId: id } });
+
+    // Strip any extra DB fields (id, productId) that the form might send
+    const cleanColors = (colors ?? []).map((c: { name: string; hex: string }) => ({ name: c.name, hex: c.hex }));
+    const cleanSpecs  = (specs  ?? []).map((s: { label: string; value: string }) => ({ label: s.label, value: s.value }));
+    const cleanImages = (images ?? []).map((img: { url: string; alt?: string | null; order?: number }, i: number) => ({
+      url: img.url,
+      alt: img.alt ?? null,
+      order: img.order ?? i,
+    }));
 
     const product = await prisma.product.update({
       where: { id },
       data: {
         name,
         slug,
-        description,
+        description: description ?? null,
         price: price != null && price !== "" ? Number(price) : null,
         categoryId,
         featured: featured ?? false,
         available: available ?? true,
         isNew: isNew ?? false,
         isOffer: isOffer ?? false,
-        colors: { create: colors ?? [] },
-        specs: { create: specs ?? [] },
-        images: { create: (images ?? []).map((img: { url: string; alt?: string; order?: number }) => ({ url: img.url, alt: img.alt, order: img.order ?? 0 })) },
+        colors: { create: cleanColors },
+        specs:  { create: cleanSpecs },
+        images: { create: cleanImages },
       },
     });
 
     return NextResponse.json(product);
   } catch (e) {
-    console.error("[PUT /api/productos/:id]", e);
-    return NextResponse.json({ error: "Error al actualizar el producto." }, { status: 500 });
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error("[PUT /api/productos/:id]", msg);
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
 

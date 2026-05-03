@@ -230,18 +230,20 @@ function createSupabaseClient(): any {
         const id = args?.where?.id;
         const data = args?.data ?? {};
 
-        const productUpdate: AnyRecord = {
-          name: data.name,
-          slug: data.slug,
-          description: data.description ?? null,
-          price: data.price ?? null,
-          featured: data.featured ?? false,
-          available: data.available ?? true,
-          isNew: data.isNew ?? false,
-          isOffer: data.isOffer ?? false,
-          categoryId: data.categoryId,
-          updatedAt: nowIso(),
-        };
+        const productUpdate: AnyRecord = Object.fromEntries(
+          Object.entries({
+            name: data.name,
+            slug: data.slug,
+            description: data.description ?? null,
+            price: data.price ?? null,
+            featured: data.featured ?? false,
+            available: data.available ?? true,
+            isNew: data.isNew ?? false,
+            isOffer: data.isOffer ?? false,
+            categoryId: data.categoryId,
+            updatedAt: nowIso(),
+          }).filter(([, v]) => v !== undefined)
+        );
 
         const rows = await run(
           supabase.from("Product").update(productUpdate).eq("id", id).select("*").limit(1)
