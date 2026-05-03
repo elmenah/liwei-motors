@@ -11,7 +11,7 @@ const schema = z.object({
   contact: z.string().min(2, "Ingresá tu nombre completo"),
   email: z.string().email("Email inválido"),
   phone: z.string().optional(),
-  units: z.number().min(1, "Mínimo 1 unidad").optional(),
+  units: z.coerce.number().min(1, "Mínimo 1 unidad").optional(),
   message: z.string().optional(),
 });
 
