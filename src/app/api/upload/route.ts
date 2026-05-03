@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { createClient } from "@supabase/supabase-js";
+
+function getSupabase() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+  return createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
+}
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -23,13 +28,26 @@ export async function POST(req: NextRequest) {
 
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
-
   const ext = file.name.split(".").pop() ?? "jpg";
   const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-  const uploadsDir = path.join(process.cwd(), "public", "uploads");
 
-  await mkdir(uploadsDir, { recursive: true });
-  await writeFile(path.join(uploadsDir, filename), buffer);
+  const supabase = getSupabase();
 
-  return NextResponse.json({ url: `/uploads/${filename}` });
+  const { error } = await supabase.storage
+    .from("product-images")
+    .upload(filename, buffer, {
+      contentType: file.type,
+      upsert: false,
+    });
+
+  if (error) {
+    console.error("[upload] Supabase storage error:", error.message);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  const { data: urlData } = supabase.storage
+    .from("product-images")
+    .getPublicUrl(filename);
+
+  return NextResponse.json({ url: urlData.publicUrl });
 }
