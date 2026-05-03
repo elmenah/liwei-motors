@@ -97,6 +97,7 @@ export type Banner = {
   bgColor: string;
   active: boolean;
   order: number;
+  format: "wide" | "square";
   createdAt?: string;
   updatedAt?: string;
 };

@@ -13,9 +13,23 @@ type Banner = {
   linkUrl: string | null;
   linkLabel: string | null;
   bgColor: string;
+  format: "wide" | "square";
 };
 
 export default function BannerSlider({ banners }: { banners: Banner[] }) {
+  const wide = banners.filter((b) => b.format !== "square");
+  const square = banners.filter((b) => b.format === "square");
+
+  return (
+    <>
+      {wide.length > 0 && <WideBannerSlider banners={wide} />}
+      {square.length > 0 && <SquareBannerRow banners={square} />}
+    </>
+  );
+}
+
+/* ─── Wide slider (comportamiento original) ─── */
+function WideBannerSlider({ banners }: { banners: Banner[] }) {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -28,8 +42,6 @@ export default function BannerSlider({ banners }: { banners: Banner[] }) {
     return () => clearInterval(id);
   }, [paused, banners.length, next]);
 
-  if (banners.length === 0) return null;
-
   const banner = banners[current];
 
   return (
@@ -39,7 +51,6 @@ export default function BannerSlider({ banners }: { banners: Banner[] }) {
       onMouseLeave={() => setPaused(false)}
     >
       <div className="relative h-[280px] sm:h-[360px] md:h-[420px] w-full transition-all duration-500">
-        {/* Background image or color */}
         {banner.imageUrl ? (
           <Image
             src={banner.imageUrl}
@@ -51,11 +62,7 @@ export default function BannerSlider({ banners }: { banners: Banner[] }) {
         ) : (
           <div className="absolute inset-0" style={{ backgroundColor: banner.bgColor }} />
         )}
-
-        {/* Overlay */}
         <div className="absolute inset-0 bg-black/40" />
-
-        {/* Content */}
         <div className="relative h-full flex items-center">
           <div className="max-w-7xl mx-auto px-8 sm:px-12 lg:px-16 w-full">
             <div className="max-w-xl">
@@ -80,8 +87,6 @@ export default function BannerSlider({ banners }: { banners: Banner[] }) {
             </div>
           </div>
         </div>
-
-        {/* Arrows */}
         {banners.length > 1 && (
           <>
             <button
@@ -101,8 +106,6 @@ export default function BannerSlider({ banners }: { banners: Banner[] }) {
           </>
         )}
       </div>
-
-      {/* Dots */}
       {banners.length > 1 && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
           {banners.map((_, i) => (
@@ -117,6 +120,58 @@ export default function BannerSlider({ banners }: { banners: Banner[] }) {
           ))}
         </div>
       )}
+    </section>
+  );
+}
+
+/* ─── Square banners — fila horizontal desplazable ─── */
+function SquareBannerRow({ banners }: { banners: Banner[] }) {
+  return (
+    <section className="py-8 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory">
+          {banners.map((b) => (
+            <div
+              key={b.id}
+              className="relative shrink-0 w-56 sm:w-64 aspect-square rounded-2xl overflow-hidden border border-gray-100 shadow-sm snap-start"
+              style={{ backgroundColor: b.bgColor }}
+            >
+              {b.imageUrl && (
+                <Image
+                  src={b.imageUrl}
+                  alt={b.title ?? "Banner"}
+                  fill
+                  className="object-cover"
+                />
+              )}
+              {/* Overlay solo si hay texto */}
+              {(b.title || b.subtitle || b.linkUrl) && (
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+              )}
+              <div className="absolute inset-0 flex flex-col justify-end p-4">
+                {b.title && (
+                  <p className="font-bold text-white text-sm sm:text-base leading-tight drop-shadow">
+                    {b.title}
+                  </p>
+                )}
+                {b.subtitle && (
+                  <p className="text-white/80 text-xs mt-1 leading-snug line-clamp-2">
+                    {b.subtitle}
+                  </p>
+                )}
+                {b.linkUrl && (
+                  <Link
+                    href={b.linkUrl}
+                    className="mt-3 inline-block bg-white text-[#1e40af] font-bold text-xs px-4 py-1.5 rounded-lg hover:bg-gray-100 transition-colors w-fit shadow"
+                  >
+                    {b.linkLabel ?? "Ver más"}
+                  </Link>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

@@ -455,6 +455,7 @@ function createSupabaseClient(): any {
               bgColor: data.bgColor ?? "#1e40af",
               active: data.active ?? true,
               order: data.order ?? 0,
+              format: data.format ?? "wide",
               updatedAt: nowIso(),
             })
             .select("*")
