@@ -1,7 +1,9 @@
-export default function WhatsAppButton() {
+export default function WhatsAppButton({ whatsapp }: { whatsapp: string | null }) {
+  const number = whatsapp ?? "56927389896";
+
   return (
     <a
-      href="https://wa.me/56927389896?text=Hola! Me gustaría obtener más información sobre sus productos."
+      href={`https://wa.me/${number}?text=Hola! Me gustaría obtener más información sobre sus productos.`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Contactar por WhatsApp"

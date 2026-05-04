@@ -13,6 +13,7 @@ import {
   Zap,
   Image,
   Star,
+  Settings,
 } from "lucide-react";
 
 const navItems = [
@@ -23,6 +24,7 @@ const navItems = [
   { href: "/admin/testimonios", icon: <Star className="w-4 h-4" />, label: "Testimonios" },
   { href: "/admin/cotizaciones", icon: <FileText className="w-4 h-4" />, label: "Cotizaciones" },
   { href: "/admin/faq", icon: <MessageCircle className="w-4 h-4" />, label: "FAQ" },
+  { href: "/admin/settings", icon: <Settings className="w-4 h-4" />, label: "Configuración" },
 ];
 
 type User = { name?: string | null; email?: string | null };

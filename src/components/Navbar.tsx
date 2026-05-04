@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X, Zap } from "lucide-react";
+import type { SiteSettings } from "@/types/db";
 
 const links = [
   { href: "/", label: "Inicio" },
@@ -12,9 +14,11 @@ const links = [
   { href: "/cotizar", label: "Cotizar" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ settings }: { settings: SiteSettings | null }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  const siteName = settings?.siteName ?? "Liwei Motors";
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
@@ -22,10 +26,27 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 font-bold text-xl text-[#0f172a]">
-            <div className="w-8 h-8 bg-[#1e40af] rounded-lg flex items-center justify-center">
-              <Zap className="w-5 h-5 text-white" />
-            </div>
-            <span>Liwei <span className="text-[#1e40af]">Motors</span></span>
+            {settings?.logoUrl ? (
+              <Image
+                src={settings.logoUrl}
+                alt={siteName}
+                width={120}
+                height={40}
+                className="h-9 w-auto object-contain"
+              />
+            ) : (
+              <>
+                <div className="w-8 h-8 bg-[#1e40af] rounded-lg flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-white" />
+                </div>
+                <span>
+                  {siteName.includes(" ")
+                    ? <>{siteName.split(" ")[0]} <span className="text-[#1e40af]">{siteName.split(" ").slice(1).join(" ")}</span></>
+                    : siteName
+                  }
+                </span>
+              </>
+            )}
           </Link>
 
           {/* Desktop nav */}

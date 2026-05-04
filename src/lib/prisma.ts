@@ -594,6 +594,25 @@ function createSupabaseClient(): any {
         return (rows as AnyRecord[])[0] ?? null;
       },
     },
+
+    siteSettings: {
+      async findFirst() {
+        const rows = await run(supabase.from("SiteSettings").select("*").limit(1));
+        return (rows as AnyRecord[])[0] ?? null;
+      },
+
+      async upsert(args: any) {
+        const data = args?.data ?? {};
+        const rows = await run(
+          supabase
+            .from("SiteSettings")
+            .upsert({ id: "main", ...data, updatedAt: nowIso() }, { onConflict: "id" })
+            .select("*")
+            .limit(1)
+        );
+        return (rows as AnyRecord[])[0] ?? null;
+      },
+    },
   };
 }
 

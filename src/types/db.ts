@@ -102,6 +102,20 @@ export type Banner = {
   updatedAt?: string;
 };
 
+export type SiteSettings = {
+  id: string;
+  siteName: string;
+  logoUrl: string | null;
+  whatsapp: string | null;
+  instagram: string | null;
+  facebook: string | null;
+  tiktok: string | null;
+  email: string | null;
+  phone: string | null;
+  address: string | null;
+  updatedAt?: string;
+};
+
 export type AdminUser = {
   id: string;
   email: string;
