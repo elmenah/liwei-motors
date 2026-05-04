@@ -12,13 +12,9 @@ export default async function BannersPage() {
   const session = await auth();
   if (!session) redirect("/admin/login");
 
-  const [banners, categories, products] = await Promise.all([
+  const [banners, categories] = await Promise.all([
     prisma.banner.findMany({ orderBy: { order: "asc" } }) as Promise<Banner[]>,
     prisma.category.findMany({ orderBy: { order: "asc" } }),
-    prisma.product.findMany({
-      where: { available: true },
-      orderBy: { name: "asc" },
-    }),
   ]);
 
   const linkOptions: LinkOption[] = [
@@ -29,10 +25,6 @@ export default async function BannersPage() {
     ...categories.map((c: any) => ({
       label: `Categoría: ${c.name}`,
       value: `/catalogo?categoria=${c.slug}`,
-    })),
-    ...products.map((p: any) => ({
-      label: `Producto: ${p.name}`,
-      value: `/catalogo/${p.slug}`,
     })),
   ];
 
