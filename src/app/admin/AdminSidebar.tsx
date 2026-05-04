@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
@@ -11,8 +12,7 @@ import {
   MessageCircle,
   FileText,
   LogOut,
-  Zap,
-  Image,
+  ImageIcon,
   Star,
   Settings,
   Menu,
@@ -23,7 +23,7 @@ const navItems = [
   { href: "/admin/dashboard", icon: <LayoutDashboard className="w-4 h-4" />, label: "Dashboard" },
   { href: "/admin/productos", icon: <Package className="w-4 h-4" />, label: "Productos" },
   { href: "/admin/categorias", icon: <Tag className="w-4 h-4" />, label: "Categorías" },
-  { href: "/admin/banners", icon: <Image className="w-4 h-4" />, label: "Banners" },
+  { href: "/admin/banners", icon: <ImageIcon className="w-4 h-4" />, label: "Banners" },
   { href: "/admin/testimonios", icon: <Star className="w-4 h-4" />, label: "Testimonios" },
   { href: "/admin/cotizaciones", icon: <FileText className="w-4 h-4" />, label: "Cotizaciones" },
   { href: "/admin/faq", icon: <MessageCircle className="w-4 h-4" />, label: "FAQ" },
@@ -53,9 +53,7 @@ export default function AdminSidebar({ user }: { user?: User }) {
     <>
       {/* Logo */}
       <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
-        <div className="w-8 h-8 bg-[#1e40af] rounded-lg flex items-center justify-center shrink-0">
-          <Zap className="w-5 h-5 text-white" />
-        </div>
+        <Image src="/logoliwei.jpeg" alt="Liwei Motors" width={32} height={32} className="rounded-lg shrink-0 object-contain" />
         <div>
           <div className="font-bold text-sm">Liwei Motors</div>
           <div className="text-xs text-gray-400">Admin Panel</div>
@@ -118,9 +116,7 @@ export default function AdminSidebar({ user }: { user?: User }) {
       {/* ── Mobile top bar ── */}
       <header className="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#0f172a] text-white flex items-center justify-between px-4 h-14 border-b border-white/10">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-[#1e40af] rounded-lg flex items-center justify-center shrink-0">
-            <Zap className="w-4 h-4 text-white" />
-          </div>
+          <Image src="/logoliwei.jpeg" alt="Liwei Motors" width={28} height={28} className="rounded-lg shrink-0 object-contain" />
           <span className="font-semibold text-sm">{currentPage}</span>
         </div>
         <button
@@ -149,9 +145,7 @@ export default function AdminSidebar({ user }: { user?: User }) {
         {/* Close button */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-[#1e40af] rounded-lg flex items-center justify-center">
-              <Zap className="w-4 h-4 text-white" />
-            </div>
+            <Image src="/logoliwei.jpeg" alt="Liwei Motors" width={28} height={28} className="rounded-lg shrink-0 object-contain" />
             <span className="font-bold text-sm">Liwei Motors</span>
           </div>
           <button
