@@ -65,6 +65,11 @@ export default async function CotizacionesPage() {
                     {q.contact} · <a href={`mailto:${q.email}`} className="text-[#1e40af] hover:underline">{q.email}</a>
                     {q.phone && ` · ${q.phone}`}
                   </div>
+                  {q.product && (
+                    <div className="text-sm text-gray-500 mt-1">
+                      <span className="font-medium text-[#1e40af]">Producto:</span> {q.product}
+                    </div>
+                  )}
                   {q.units && (
                     <div className="text-sm text-gray-500 mt-1">Unidades: {q.units}</div>
                   )}

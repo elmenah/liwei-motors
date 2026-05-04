@@ -69,6 +69,7 @@ export type QuoteRequest = {
   contact: string;
   email: string;
   phone: string | null;
+  product: string | null;
   units: number | null;
   message: string | null;
   status: string;

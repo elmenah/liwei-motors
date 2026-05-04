@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Zap, Mail, Phone } from "lucide-react";
+import { Zap, Mail, Phone, MapPin } from "lucide-react";
 import type { SiteSettings } from "@/types/db";
 
 export default function Footer({ settings }: { settings: SiteSettings | null }) {
@@ -111,6 +111,12 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
                 <li className="flex items-center gap-2 text-sm text-gray-400">
                   <Phone className="w-4 h-4 text-[#3b82f6]" />
                   <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">{phone}</a>
+                </li>
+              )}
+              {settings?.address && (
+                <li className="flex items-start gap-2 text-sm text-gray-400">
+                  <MapPin className="w-4 h-4 text-[#3b82f6] mt-0.5 shrink-0" />
+                  <span>{settings.address}</span>
                 </li>
               )}
             </ul>

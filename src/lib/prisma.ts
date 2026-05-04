@@ -50,6 +50,8 @@ function applyProductWhere(query: any, where: any) {
   if (typeof where.categoryId === "string") query = query.eq("categoryId", where.categoryId);
   if (where.NOT?.slug) query = query.neq("slug", where.NOT.slug);
   if (where.name?.contains) query = query.ilike("name", `%${where.name.contains}%`);
+  if (typeof where.price?.gte === "number") query = query.gte("price", where.price.gte);
+  if (typeof where.price?.lte === "number") query = query.lte("price", where.price.lte);
   return query;
 }
 
@@ -60,12 +62,20 @@ function applyProductOrder(query: any, orderBy: any) {
     let current = query;
     for (const entry of orderBy) {
       const [[column, direction]] = Object.entries(entry);
-      current = current.order(column, { ascending: direction === "asc" });
+      // Handle nullsLast for price ordering
+      if (column === "price") {
+        current = current.order(column, { ascending: direction === "asc", nullsFirst: false });
+      } else {
+        current = current.order(column, { ascending: direction === "asc" });
+      }
     }
     return current;
   }
 
   const [[column, direction]] = Object.entries(orderBy);
+  if (column === "price") {
+    return query.order(column, { ascending: direction === "asc", nullsFirst: false });
+  }
   return query.order(column, { ascending: direction === "asc" });
 }
 
@@ -404,6 +414,7 @@ function createSupabaseClient(): any {
               contact: data.contact,
               email: data.email,
               phone: data.phone ?? null,
+              product: data.product ?? null,
               units: data.units ?? null,
               message: data.message ?? null,
               status: data.status ?? "pending",

@@ -11,13 +11,14 @@ const schema = z.object({
   contact: z.string().min(2, "Ingresá tu nombre completo"),
   email: z.string().email("Email inválido"),
   phone: z.string().optional(),
+  product: z.string().optional(),
   units: z.coerce.number().min(1, "Mínimo 1 unidad").optional(),
   message: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
 
-export default function QuoteForm() {
+export default function QuoteForm({ initialProduct }: { initialProduct?: string }) {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +27,10 @@ export default function QuoteForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } = useForm<FormData>({ resolver: zodResolver(schema) as any });
+  } = useForm<FormData>({
+    resolver: zodResolver(schema) as any,
+    defaultValues: { product: initialProduct ?? "" },
+  });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function onSubmit(data: any) {
@@ -117,10 +121,22 @@ export default function QuoteForm() {
           <input
             {...register("phone")}
             type="tel"
-            placeholder="+54 11 0000-0000"
+            placeholder="+56 9 0000-0000"
             className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#1e40af] focus:ring-1 focus:ring-[#1e40af] transition-colors"
           />
         </div>
+      </div>
+
+      {/* Product */}
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+          Producto de interés
+        </label>
+        <input
+          {...register("product")}
+          placeholder="Ej: Scooter Eléctrico X200"
+          className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#1e40af] focus:ring-1 focus:ring-[#1e40af] transition-colors"
+        />
       </div>
 
       {/* Units */}
@@ -148,7 +164,7 @@ export default function QuoteForm() {
         <textarea
           {...register("message")}
           rows={4}
-          placeholder="Contanos sobre tu proyecto, qué modelos te interesan, uso previsto, etc."
+          placeholder="Contanos sobre tu proyecto, uso previsto, etc."
           className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#1e40af] focus:ring-1 focus:ring-[#1e40af] transition-colors resize-none"
         />
       </div>

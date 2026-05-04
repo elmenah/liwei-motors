@@ -15,6 +15,7 @@ export async function GET() {
     Contacto: q.contact,
     Email: q.email,
     Teléfono: q.phone ?? "",
+    Producto: q.product ?? "",
     Unidades: q.units ?? "",
     Mensaje: q.message ?? "",
     Estado: q.status === "pending" ? "Pendiente" : "Atendida",

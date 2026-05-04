@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { FileText } from "lucide-react";
 import QuoteForm from "./QuoteForm";
 
@@ -6,7 +8,11 @@ export const metadata = {
   description: "Solicita una cotización personalizada para tu empresa o pyme.",
 };
 
-export default function CotizarPage() {
+type Props = { searchParams: Promise<{ producto?: string }> };
+
+export default async function CotizarPage({ searchParams }: Props) {
+  const { producto } = await searchParams;
+
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       {/* Header */}
@@ -15,9 +21,15 @@ export default function CotizarPage() {
           <FileText className="w-7 h-7 text-[#1e40af]" />
         </div>
         <h1 className="text-4xl font-bold text-[#0f172a]">Solicitar cotización</h1>
-        <p className="text-gray-500 mt-3 text-lg">
-          Completá el formulario y un asesor se pondrá en contacto dentro de las 24 hs.
-        </p>
+        {producto ? (
+          <p className="text-gray-500 mt-3 text-lg">
+            Estás cotizando: <span className="font-semibold text-[#1e40af]">{producto}</span>
+          </p>
+        ) : (
+          <p className="text-gray-500 mt-3 text-lg">
+            Completá el formulario y un asesor se pondrá en contacto dentro de las 24 hs.
+          </p>
+        )}
       </div>
 
       {/* Highlights */}
@@ -39,7 +51,7 @@ export default function CotizarPage() {
 
       {/* Form */}
       <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-6 md:p-8">
-        <QuoteForm />
+        <QuoteForm initialProduct={producto} />
       </div>
     </div>
   );

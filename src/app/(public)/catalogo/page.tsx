@@ -17,19 +17,42 @@ export const metadata: Metadata = {
   },
 };
 
-async function getProducts(categoria?: string, q?: string): Promise<Product[]> {
+type SortOption = "featured" | "newest" | "price_asc" | "price_desc";
+
+function getSortOrder(sort: SortOption) {
+  switch (sort) {
+    case "newest":    return [{ createdAt: "desc" }];
+    case "price_asc": return [{ price: "asc" }];
+    case "price_desc":return [{ price: "desc" }];
+    default:          return [{ featured: "desc" }, { createdAt: "desc" }];
+  }
+}
+
+async function getProducts(
+  categoria?: string,
+  q?: string,
+  priceMin?: number,
+  priceMax?: number,
+  sort: SortOption = "featured"
+): Promise<Product[]> {
   return prisma.product.findMany({
     where: {
       available: true,
       ...(categoria ? { category: { slug: categoria } } : {}),
       ...(q ? { name: { contains: q } } : {}),
+      ...(priceMin !== undefined || priceMax !== undefined ? {
+        price: {
+          ...(priceMin !== undefined ? { gte: priceMin } : {}),
+          ...(priceMax !== undefined ? { lte: priceMax } : {}),
+        }
+      } : {}),
     },
     include: {
       images: { orderBy: { order: "asc" }, take: 1 },
       colors: true,
       category: true,
     },
-    orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
+    orderBy: getSortOrder(sort),
   });
 }
 
@@ -41,12 +64,20 @@ async function getCategories(): Promise<CategoryWithCount[]> {
 }
 
 type Props = {
-  searchParams: Promise<{ categoria?: string; q?: string }>;
+  searchParams: Promise<{ categoria?: string; q?: string; priceMin?: string; priceMax?: string; sort?: string }>;
 };
 
 export default async function CatalogoPage({ searchParams }: Props) {
-  const { categoria, q } = await searchParams;
-  const [products, categories] = await Promise.all([getProducts(categoria, q), getCategories()]);
+  const { categoria, q, priceMin, priceMax, sort } = await searchParams;
+
+  const parsedMin = priceMin ? Number(priceMin) : undefined;
+  const parsedMax = priceMax ? Number(priceMax) : undefined;
+  const parsedSort = (sort as SortOption) ?? "featured";
+
+  const [products, categories] = await Promise.all([
+    getProducts(categoria, q, parsedMin, parsedMax, parsedSort),
+    getCategories(),
+  ]);
 
   const activeCategory = categories.find((c) => c.slug === categoria);
 
@@ -65,7 +96,14 @@ export default async function CatalogoPage({ searchParams }: Props) {
       <div className="flex flex-col md:flex-row gap-8">
         {/* Sidebar */}
         <aside className="w-full md:w-56 shrink-0">
-          <CatalogFilters categories={categories} activeSlug={categoria} activeQ={q} />
+          <CatalogFilters
+            categories={categories}
+            activeSlug={categoria}
+            activeQ={q}
+            activePriceMin={priceMin}
+            activePriceMax={priceMax}
+            activeSort={sort ?? "featured"}
+          />
         </aside>
 
         {/* Grid */}
