@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
     localPatterns: [
       { pathname: "/uploads/**" },
       { pathname: "/images/**" },
+      { pathname: "/*.jpeg" },
+      { pathname: "/*.jpg" },
+      { pathname: "/*.png" },
+      { pathname: "/*.webp" },
     ],
     remotePatterns: [
       {
