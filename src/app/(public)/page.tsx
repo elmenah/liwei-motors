@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import Link from "next/link";
-import { ArrowRight, Zap, Shield, Truck, Award, ChevronRight } from "lucide-react";
+import { ArrowRight, Zap, Truck, Award, ChevronRight } from "lucide-react";
 import prisma from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";
 import BannerSlider from "@/components/BannerSlider";
@@ -120,10 +120,9 @@ export default async function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
               {[
-                { value: "100+", label: "Modelos disponibles" },
+                { value: "20+", label: "Modelos disponibles" },
                 { value: "500+", label: "Clientes satisfechos" },
                 { value: "24/7", label: "Soporte técnico" },
-                { value: "12 meses", label: "Garantía" },
               ].map((s) => (
                 <div key={s.label}>
                   <div className="text-2xl font-bold text-white">{s.value}</div>
@@ -214,17 +213,12 @@ export default async function HomePage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-[#0f172a]">¿Por qué elegir Liwei Motors?</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
                 icon: <Zap className="w-6 h-6" />,
                 title: "Alta eficiencia",
                 desc: "Tecnología de baterías de litio con la mejor relación autonomía-precio del mercado.",
-              },
-              {
-                icon: <Shield className="w-6 h-6" />,
-                title: "Garantía extendida",
-                desc: "12 meses en baterías y componentes eléctricos, 24 meses en estructura.",
               },
               {
                 icon: <Truck className="w-6 h-6" />,
