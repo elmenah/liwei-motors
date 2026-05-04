@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Plus, Trash2, Pencil, Loader2, Upload, X, Check, LayoutTemplate, Square } from "lucide-react";
+import type { LinkOption } from "./page";
 
 type Banner = {
   id: string;
@@ -42,7 +43,13 @@ const FORMAT_OPTIONS = [
   },
 ];
 
-export default function BannersClient({ initialBanners }: { initialBanners: Banner[] }) {
+export default function BannersClient({
+  initialBanners,
+  linkOptions,
+}: {
+  initialBanners: Banner[];
+  linkOptions: LinkOption[];
+}) {
   const [banners, setBanners] = useState<Banner[]>(initialBanners);
   const [editing, setEditing] = useState<Banner | null>(null);
   const [form, setForm] = useState<Omit<Banner, "id" | "order">>(empty);
@@ -241,15 +248,32 @@ export default function BannersClient({ initialBanners }: { initialBanners: Bann
               <input value={form.subtitle ?? ""} onChange={(e) => setForm((f) => ({ ...f, subtitle: e.target.value }))} placeholder="Ej: 20% de descuento en scooters seleccionados" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1e40af]" />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Link (opcional)</label>
-                <input value={form.linkUrl ?? ""} onChange={(e) => setForm((f) => ({ ...f, linkUrl: e.target.value }))} placeholder="/catalogo" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1e40af]" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">Link del botón (opcional)</label>
+                <select
+                  value={form.linkUrl ?? ""}
+                  onChange={(e) => setForm((f) => ({ ...f, linkUrl: e.target.value }))}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1e40af] bg-white"
+                >
+                  {linkOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Texto del botón</label>
-                <input value={form.linkLabel ?? ""} onChange={(e) => setForm((f) => ({ ...f, linkLabel: e.target.value }))} placeholder="Ver ofertas" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1e40af]" />
-              </div>
+              {form.linkUrl && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Texto del botón</label>
+                  <input
+                    value={form.linkLabel ?? ""}
+                    onChange={(e) => setForm((f) => ({ ...f, linkLabel: e.target.value }))}
+                    placeholder="Ver ofertas"
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1e40af]"
+                  />
+                </div>
+              )}
             </div>
 
             <label className="flex items-center gap-2 cursor-pointer">
