@@ -118,7 +118,7 @@ export default async function HomePage() {
         {/* Stats bar */}
         <div className="relative bg-[#1e40af]/20 border-t border-[#1e40af]/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div className="flex flex-wrap justify-center gap-8 md:gap-16 text-center">
               {[
                 { value: "20+", label: "Modelos disponibles" },
                 { value: "500+", label: "Clientes satisfechos" },
