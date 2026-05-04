@@ -13,7 +13,7 @@ export default async function AdminLayout({
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {session && <AdminSidebar user={session.user} />}
-      <main className={`flex-1 ${session ? "md:pl-64" : ""}`}>{children}</main>
+      <main className={`flex-1 ${session ? "md:pl-64 pt-14 md:pt-0" : ""}`}>{children}</main>
     </div>
   );
 }
