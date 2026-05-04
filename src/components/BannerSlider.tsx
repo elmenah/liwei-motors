@@ -129,6 +129,17 @@ function SquareBannerRow({ banners }: { banners: Banner[] }) {
   return (
     <section className="py-8 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* Swipe hint — solo visible en mobile */}
+        {banners.length > 1 && (
+          <div className="flex items-center justify-end gap-1.5 mb-3 sm:hidden text-gray-400">
+            <svg className="w-4 h-4 animate-bounce-x" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+            <span className="text-xs font-medium">Deslizá para ver más</span>
+          </div>
+        )}
+
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory">
           {banners.map((b) => (
             <div
