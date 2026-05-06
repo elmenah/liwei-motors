@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Zap, Truck, Award, ChevronRight } from "lucide-react";
 import prisma from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";
@@ -85,32 +86,54 @@ export default async function HomePage() {
           }}
         />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-[#1e40af]/20 border border-[#1e40af]/40 text-[#93c5fd] px-3 py-1.5 rounded-full text-sm font-medium mb-6">
-              <Zap className="w-4 h-4" />
-              Movilidad eléctrica de alta calidad
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Texto */}
+            <div>
+              <div className="inline-flex items-center gap-2 bg-[#1e40af]/20 border border-[#1e40af]/40 text-[#93c5fd] px-3 py-1.5 rounded-full text-sm font-medium mb-6">
+                <Zap className="w-4 h-4" />
+                Movilidad eléctrica de alta calidad
+              </div>
+              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+                Muévete hacia el{" "}
+                <span className="text-[#3b82f6]">futuro eléctrico</span>
+              </h1>
+              <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-10 max-w-2xl">
+                Scooters y triciclos eléctricos diseñados para la ciudad y el comercio. Eficientes, duraderos y con el respaldo de Liwei Motors.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/catalogo"
+                  className="inline-flex items-center gap-2 bg-[#1e40af] hover:bg-[#1e3a8a] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
+                >
+                  Ver catálogo
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href="/cotizar"
+                  className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl border border-white/20 transition-colors"
+                >
+                  Solicitar cotización
+                </Link>
+              </div>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-              Muévete hacia el{" "}
-              <span className="text-[#3b82f6]">futuro eléctrico</span>
-            </h1>
-            <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-10 max-w-2xl">
-              Scooters y triciclos eléctricos diseñados para la ciudad y el comercio. Eficientes, duraderos y con el respaldo de Liwei Motors.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/catalogo"
-                className="inline-flex items-center gap-2 bg-[#1e40af] hover:bg-[#1e3a8a] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
-              >
-                Ver catálogo
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href="/cotizar"
-                className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl border border-white/20 transition-colors"
-              >
-                Solicitar cotización
-              </Link>
+
+            {/* Logo circular */}
+            <div className="hidden lg:flex items-center justify-center">
+              <div className="relative w-[320px] h-[320px]">
+                {/* Anillo exterior con glow */}
+                <div className="absolute inset-0 rounded-full bg-[#1e40af]/20 blur-2xl scale-110" />
+                <div className="absolute inset-0 rounded-full ring-1 ring-[#1e40af]/40" />
+                {/* Imagen circular */}
+                <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-[#1e40af]/50 shadow-2xl shadow-[#1e40af]/40">
+                  <Image
+                    src="/logoliweii.jpeg"
+                    alt="Liwei Motors"
+                    fill
+                    className="object-contain p-0"
+                    priority
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
