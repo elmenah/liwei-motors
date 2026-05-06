@@ -124,8 +124,16 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
         </div>
 
         <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-gray-500">
-            © {new Date().getFullYear()} {siteName}. Todos los derechos reservados.
+          <p className="text-xs text-gray-500 text-center md:text-left">
+            © {new Date().getFullYear()} {siteName}. Todos los derechos reservados. {" "}
+            <a
+              href="https://www.menadev.cl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              Hecho por MenaDev
+            </a>
           </p>
           <Link href="/admin/login" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">
             Acceso Administrador
